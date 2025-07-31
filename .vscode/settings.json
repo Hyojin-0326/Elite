@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdexcept": "cpp",
+        "vector": "cpp",
+        "complex": "cpp"
+    }
+}
