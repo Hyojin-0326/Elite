@@ -131,19 +131,6 @@ class Session:
 
     def __len__(self):
         return len(self.scans)
-
-    def __getitem__legacy(self, idx: Union[int, slice]) -> PointCloud:
-        if isinstance(idx, int):
-            cloud = self.scans[idx].pcd
-            return PointCloud(cloud)
-        elif isinstance(idx, slice):
-            clouds = [self.scans[i].pcd for i in range(*idx.indices(len(self)))]#scan lists의 모든 pcd를 로드한다.
-            combined = o3d.geometry.PointCloud() # 빈 포인트클라우드 생성 후 합침
-            for pcd in clouds:
-                combined += pcd # 딥카피
-            return PointCloud(combined)
-        else:
-            raise TypeError("Index must be int or slice")
         
     def __getitem__(self, idx: Union[int, slice]) -> PointCloud: ## 포인트클라우드를 배치로 처리하게 하면 for문 없에기 가능< 일단 나중에 해야됨... 전체 파이프라인 수정 필요
         # tpcd = o3d.t.geometry.PointCloud.from_legacy(self.cloud).cuda()
@@ -217,3 +204,16 @@ class Session:
         self.cloud.colors = o3d.utility.Vector3dVector(np.c_[inten, inten, inten])
         o3d.io.write_point_cloud(path, self.cloud)
         return self
+    
+    def __getitem__legacy(self, idx: Union[int, slice]) -> PointCloud:
+        if isinstance(idx, int):
+            cloud = self.scans[idx].pcd
+            return PointCloud(cloud)
+        elif isinstance(idx, slice):
+            clouds = [self.scans[i].pcd for i in range(*idx.indices(len(self)))]#scan lists의 모든 pcd를 로드한다.
+            combined = o3d.geometry.PointCloud() # 빈 포인트클라우드 생성 후 합침
+            for pcd in clouds:
+                combined += pcd # 딥카피
+            return PointCloud(combined)
+        else:
+            raise TypeError("Index must be int or slice")

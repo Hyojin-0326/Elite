@@ -7,7 +7,7 @@ __global__ void height_filter_kernel(float* data, int64_t N, float height) {
     int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < N) {
         float z = data[idx * 3 + 2];
-        if (z >= height) {    
+        if (z <= height) {    
             data[idx * 3 + 0] = 0.0f;
             data[idx * 3 + 1] = 0.0f;
             data[idx * 3 + 2] = 0.0f;

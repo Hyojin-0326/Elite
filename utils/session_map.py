@@ -23,7 +23,7 @@ class SessionMap():
     def get_poses(self):
         return self.poses
     
-    def load_poses(self, pose_path: str):
+    def load_poses(self, pose_path: str): ## 이부분도 np read로 변경가능
         # check existence of file
         if not os.path.exists(pose_path):
             raise FileNotFoundError(f"File {pose_path} does not exist.")
@@ -40,8 +40,7 @@ class SessionMap():
         return poses
 
     def _clamp_eph(self, eph, min_eph = 0, max_eph = 1):
-        eph = np.where(eph < min_eph, min_eph, eph)
-        eph = np.where(eph > max_eph, max_eph, eph)
+        eph = np.clip(eph, min_eph, max_eph)
         return eph
     
     def _multiply_eph(self, eph, factor = 1.1):

@@ -169,7 +169,7 @@ class MapZipper:
         for i in tqdm(idxs, desc=f"Alignment ({desc})", ncols=100):
             src_pc = self.src_session[i].downsample(p["src_voxel_size"]).get()
             query = self.src_session.get_pose(i)[:3, 3]
-            tgt_crop = self.crop_cuda(merged_tgt, query, p.get("crop_radius", 100.0))
+            tgt_crop = self.crop(merged_tgt, query, p.get("crop_radius", 100.0))
 
             if self._is_nonoverlapping(query, p.get("non_overlap_threshold", 10.0)):
                 logger.debug(f"Scan {i} non-overlapping; skipping")
