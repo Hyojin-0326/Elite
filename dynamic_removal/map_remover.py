@@ -3,19 +3,74 @@ import yaml
 import numpy as np
 import open3d as o3d
 from tqdm import trange
-from scipy.spatial import KDTree
+import torch
 
 from utils.session import Session
 from utils.session_map import SessionMap
 from utils.logger import logger
 
+def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int, max_bytes=1e9):
+    # scan_pts: (N, D)
+    # anchor_pts: (A, D)
+    # k: top-k
+    # max_bytes: 한 번에 연산할 최대 메모리 (float32 기준, default 1GB)
+    N, D = scan_pts.shape
+    A = anchor_pts.shape[0]
+    bytes_per_dist = 4  # float32
+
+    total_bytes = N * A * bytes_per_dist
+
+    if total_bytes <= max_bytes:
+        dists_all = torch.cdist(scan_pts, anchor_pts)           # (N, A)
+        dists_k, inds = torch.topk(dists_all, k, dim=1, largest=False)
+        return dists_k, inds
+
+    else:
+        # Batch로 나눠서 처리
+        print(f"[AutoBatch] Total memory {total_bytes/1e6:.1f}MB > {max_bytes/1e6:.1f}MB → batching")
+        batch_size = int(max_bytes // (A * bytes_per_dist))
+        dists_k_all, inds_all = [], []
+
+        for i in range(0, N, batch_size):
+            end = min(i + batch_size, N)
+            dists = torch.cdist(scan_pts[i:end], anchor_pts)       # (B, A)
+            d_k, i_k = torch.topk(dists, k, dim=1, largest=False)
+            dists_k_all.append(d_k)
+            inds_all.append(i_k)
+
+        return torch.cat(dists_k_all, dim=0), torch.cat(inds_all, dim=0)
+    
+def voxel_downsample_gpu(points: torch.Tensor, voxel_size: float) -> torch.Tensor:
+    """
+    GPU 상에서 voxel 기반 다운샘플링 수행
+    - points: (N, 3) torch.float32 tensor (device=CUDA)
+    - voxel_size: float (양수)
+
+    Returns:
+    - downsampled_points: (M, 3), 각 voxel의 centroid
+    """
+    assert points.ndim == 2 and points.shape[1] == 3
+    assert points.is_cuda
+    assert voxel_size > 0
+
+    # 1. voxel grid 좌표로 quantization
+    keys = torch.floor(points / voxel_size).to(torch.int32)  # (N, 3)
+
+    # 2. unique voxel 찾고 inverse 인덱스 추출
+    uniq, inv = torch.unique(keys, return_inverse=True, dim=0)  # uniq: (M, 3), inv: (N,)
+
+    # 3. voxel별로 centroid 계산 (index_add + bincount)
+    summed = torch.zeros((uniq.shape[0], 3), device=points.device, dtype=points.dtype)
+    summed = summed.index_add_(0, inv, points)  # (M, 3)
+
+    counts = torch.bincount(inv, minlength=uniq.shape[0]).unsqueeze(1)  # (M, 1)
+
+    downsampled = summed / counts  # (M, 3)
+
+    return downsampled
 
 class MapRemover:
-    def __init__(
-        self, 
-        config_path: str
-    ):
-        # Load parameters
+    def __init__(self, config_path: str):
         with open(config_path, 'r') as f:
             self.params = yaml.safe_load(f)
 
@@ -26,135 +81,158 @@ class MapRemover:
         self.std_dev_f = 0.025
         self.alpha = 0.5
         self.beta = 0.1
+        self.device = torch.device("cuda")
 
-        self.session_loader : Session = None
-        self.session_map : SessionMap = None
+        self.session_loader: Session = None
+        self.session_map: SessionMap = None
 
-
-    def load(self, new_session : Session = None):
+    def load(self, new_session: Session = None):
         p_settings = self.params["settings"]
-
         if new_session is None:
             self.session_loader = Session(p_settings["scans_dir"], p_settings["poses_file"])
         else:
             self.session_loader = new_session
-        
         logger.info(f"Loaded new session")
+
 
 
     def run(self):
         p_settings = self.params["settings"]
         p_dor = self.params["dynamic_object_removal"]
-
-        # 1) Aggregate scans to create session map
-        session_map = self.session_loader[0:len(self.session_loader)].downsample(0.01).get() 
-        #(M, 3)의 clouds 행렬 로드하고 1cm 복셀그리드 centroid, M은 현재 세션의 포인트 갯수
-        eph_l = np.zeros(len(session_map.points)) #M개만큼 0으로 만들어놓음, 현재 세션의 모든 포인트의 eph 맵
+        session_map = self.session_loader[0:len(self.session_loader)].downsample(0.01).get()
+        eph_l = np.zeros(len(session_map.points))
         logger.info(f"Initialized session map")
 
-        # 2) Select anchor points for local ephemerality update < 앵커에 대해서만 한 번 업뎃함
-        anchor_points = session_map.voxel_down_sample(p_dor["anchor_voxel_size"]) 
-        #한 번 더 다운샘플링, 얘네가 주변 점 ephemerality 업데이트의 앵커역할 함. A개(A<M)로 전체 포인트 수 줄어듦
-        anchor_eph_l = np.ones(len(anchor_points.points)) * 0.5 
-        # initial value, 앵커 eph A개 모두 0.5로 둠
-        anchor_kdtree = KDTree(np.asarray(anchor_points.points))
+
+
+        #앵커포인트
+        anchor_points = session_map.voxel_down_sample(p_dor["anchor_voxel_size"])
+        anchor_eph_l = np.ones(len(anchor_points.points)) * 0.5
+
+        #gpu로 옮기기
+        device = self.device
+        anchor_pts = torch.from_numpy(np.asarray(anchor_points.points)).to(device)    # (M,3)
+        anchor_eph = torch.from_numpy(anchor_eph_l).to(device)                        # (M,)
+
 
         logger.info(f"Updating anchor local ephemerality")
+
+        #메모리 할당 최적화
+        eph_sum = torch.zeros_like(anchor_eph)
+        eph_cnt = torch.zeros_like(anchor_eph)
+        sum_update = torch.zeros_like(anchor_eph)
+        count_update = torch.zeros_like(anchor_eph)
+
+        ## 앵커업뎃
         for i in trange(0, len(self.session_loader), p_dor["stride"], desc="Updating \u03B5_l", ncols=100):
-        # session_loader: 1개의 세션을 로드함. length: 그 세션의 스캔수
             logger.debug(f"Processing scan {i + 1}/{len(self.session_loader)}")
             scan = np.asarray(self.session_loader[i].get().points)
-            # 세션의 i번째 스캔을 꺼내고 scan행렬: (N_i, 3) 을 만듦. (N_i는 i번째 세션의 pcd 수)
+            # 스캔 포인트도 GPU에 올리기
+            scan_pts = torch.from_numpy(np.asarray(scan)).to(device)                      # (N,3)
             pose = self.session_loader.get_pose(i)[:3, 3]
-            #pose:T행렬, i번째 스캔의 T행렬만 가져옴 (3,)
+
+            dists_k, inds = knn_cdist_autobatch(scan_pts, anchor_pts, k=p_dor["num_k"])
+            alpha = self.alpha
+            beta  = self.beta
+            std_dev_o = self.std_dev_o
+            update_rate = torch.clamp(
+                alpha * (1 - torch.exp(-dists_k**2 / std_dev_o**2)) + beta,
+                max=alpha
+            )  # (N, k)
+
+            eph_prev = anchor_eph[inds]   # (N, k)
+            eph_new = eph_prev * update_rate / (
+                eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
+            )
+
+            # scatter_add (sum & count)
+            flat_inds = inds.reshape(-1)       # (N*k,)
+            flat_vals = eph_new.reshape(-1)   # (N*k,)
+            count_add = torch.ones_like(flat_vals)
+
+            eph_sum.zero_()
+            eph_cnt.zero_()
+            eph_sum.index_add_(0, flat_inds, flat_vals)
+            eph_cnt.index_add_(0, flat_inds, torch.ones_like(flat_vals))
+            anchor_eph = torch.where(eph_cnt > 0, eph_sum / eph_cnt, anchor_eph)
+
+
+            pose = torch.as_tensor(self.session_loader.get_pose(i)[:3, 3], device=self.device)
+            scan_pts = torch.from_numpy(scan).to(device)
+
+            shifted_scan = scan_pts - pose
+            sample_ratios = torch.linspace(p_dor["min_ratio"], p_dor["max_ratio"], p_dor["num_samples"], device=self.device)
+            free_space_samples = (pose + shifted_scan.unsqueeze(1) * sample_ratios.unsqueeze(-1)).reshape(-1,3)
+
+            # optional coarse voxel downsample (GPU)
+            free_space_samples = voxel_downsample_gpu(free_space_samples, p_dor["voxel_ds"])
+
+
+            dists, inds = knn_cdist_autobatch(free_space_samples, anchor_pts, k=p_dor["num_k"])
+
+            update_rate = torch.clamp(
+                self.alpha * (1 + torch.exp(-dists**2 / (self.std_dev_f**2))) - self.beta,
+                min=self.alpha
+            )
+            eph_prev = anchor_eph[inds]
+            # Bayesian 업데이트 (N',k)
+            eph_new = eph_prev * update_rate / (
+                eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
+            )
+
+            # scatter mean 업데이트
+            flat_idx = inds.reshape(-1)
+            flat_val = eph_new.reshape(-1)
+
+            # 합산
+            sum_update.zero_()
+            count_update.zero_()
+
+            sum_update.index_add_(0, flat_idx, flat_val)
+            count_update.index_add_(0, flat_idx, torch.ones_like(flat_val))
+            anchor_eph = torch.where(count_update > 0, sum_update / count_update, anchor_eph)
             
-            # occupied space update
-            dists, inds = anchor_kdtree.query(scan, k=p_dor["num_k"]) #scan 포인트 각각에 가까운 k 앵커를 찾음
-            #scan: i번째 스캔의 포인트들(N_i, 3)
-            #dists[m][n]: m번째 포인트와 n번째 앵커점 사이의 거리
-            #ids[m][n]: m번째 포인트와 n번째 앵커점 연결의 인덱스(바이너리 그래프) << 그래프 연산 처리? ephe를 그래프 업데이트로 계산할수도 ...
-
-            for j in range(len(dists)):
-                #N_i개의 포인트를 모두 돎(j번째 포인트)
-                dist = dists[j] # j번째 포인트와 가까운 k개의 앵커점 거리 < (k,)
-                eph_l_prev = anchor_eph_l[inds[j]] #j번째와 가까운 k개의 뭐야 eph
-                update_rate = np.minimum(self.alpha * (1 - np.exp(-1 * dist**2 / self.std_dev_o)) + self.beta, self.alpha) # Eq. 5 
-                eph_l_new = eph_l_prev * update_rate / (
-                    eph_l_prev * update_rate + (1 - eph_l_prev) * (1 - update_rate)
-                )
-                #occupied update rule
-                anchor_eph_l[inds[j]] = eph_l_new
-
-            # free space update
-            shifted_scan = scan - pose # local coordinates, 원점으로 옮긴거임
-            sample_ratios = np.linspace(p_dor["min_ratio"], p_dor["max_ratio"], p_dor["num_samples"])
-            #min_ratio부터 max_ratio까지 균등간격으로 num_samples개의 값 생성
-            free_space_samples = pose + shifted_scan[:, np.newaxis, :] * sample_ratios.T[np.newaxis, :, np.newaxis]
-            #shifted_scan:(N_i, 1, 3) 과 sample_ratios (1, num_sample ,1)로 바꿔서 브로드캐스팅함. (N_i, num_sample, 3)의 행렬 생성
-            #+pose로 월드좌표계 복원
-            free_space_samples = free_space_samples.reshape(-1, 3) # (N_i*num_sample, 3): 샘플링한 더미 free space를 1D로 flatten
-            free_space_samples_o3d = o3d.geometry.PointCloud()
-            free_space_samples_o3d.points = o3d.utility.Vector3dVector(free_space_samples)#np.array->o3d
-            free_space_samples_o3d = free_space_samples_o3d.voxel_down_sample(voxel_size=0.1)#N_i*num_sample을 M'개로 다운샘플링
-            free_space_samples = np.asarray(free_space_samples_o3d.points)#o3d->np array(M', 3)
-            dists, inds = anchor_kdtree.query(free_space_samples, k=p_dor["num_k"])
-            #dists:(M', K) = inds 차원 같음
-            for j in range(len(dists)):
-                dist = dists[j] #M'중 j번째 포인트의 dist 갖고옴
-                eph_l_prev = anchor_eph_l[inds[j]] #j번째와 가까운 K개의 eph
-                update_rate = np.maximum(self.alpha * (1 + np.exp(-1 * dist**2 / self.std_dev_f)) - self.beta, self.alpha) # Eq. 5
-                eph_l_new = eph_l_prev * update_rate / (
-                    eph_l_prev * update_rate + (1 - eph_l_prev) * (1 - update_rate)
-                )
-                anchor_eph_l[inds[j]] = eph_l_new
-
-        # 3) 앵커에서 근처점으로 eph 전달
-        distances, indices = anchor_kdtree.query(np.asarray(session_map.points), k=p_dor["num_k"])
-        #distances: (M, K), indices: (M, K), M: 세션 맵 전체를 합치고 voxel grid 1cm로 다운샘플링
-        distances = np.maximum(distances, 1e-6) # (M,), 포인트별 앵커점과 제일 큰거리 뽑음
-        weights = 1 / (distances**2) #1/거리^2를 가중치로둠. 멀리잇을수록 덜퍼짐. (M,)
-        weights /= np.sum(weights, axis=1, keepdims=True) #axis = 1로 정규화 (M,)
-        eph_l = np.sum(weights * anchor_eph_l[indices], axis=1) #(M, K) * weights로 가중합: (M,)
-        eph_l = np.clip(eph_l, 0, 1) # redundant, but for safety
+        # 3) Propagate anchor local ephemerality to session map
+        map_pts = torch.as_tensor(np.asarray(session_map.points), dtype=torch.float32, device = self.device)
+        distances, indices = knn_cdist_autobatch(map_pts, anchor_pts, k=p_dor["num_k"])
+        weights = (1 / torch.clamp(distances, min=1e-6)**2)
+        weights /= weights.sum(dim=1, keepdim=True)
+        eph_l = (weights * anchor_eph[indices]).sum(dim=1).clamp_(0,1)  
 
         # 4) Remove dynamic objects to create cleaned session map
-        static_points = session_map.select_by_index(np.where(eph_l <= p_dor["dynamic_threshold"])[0])
-        static_eph_l = eph_l[eph_l <= p_dor["dynamic_threshold"]]
-        static_points.paint_uniform_color([0.5, 0.5, 0.5])
-        dynamic_points = session_map.select_by_index(np.where(eph_l > p_dor["dynamic_threshold"])[0])
-        dynamic_points.paint_uniform_color([1, 0, 0])
+        mask_static = eph_l <= p_dor["dynamic_threshold"]
+        static_np   = map_pts[mask_static].cpu().numpy()
+        static_eph_l  = eph_l[mask_static].cpu().numpy()
+        static_points   = o3d.geometry.PointCloud(
+                        o3d.utility.Vector3dVector(static_np))
+        dynamic_points      = o3d.geometry.PointCloud(
+                        o3d.utility.Vector3dVector(map_pts[~mask_static].cpu().numpy()))
+        static_points.paint_uniform_color([.5,.5,.5]); dynamic_points.paint_uniform_color([1,0,0])
                   
         if p_dor["save_static_dynamic_map"]:
-            o3d.io.write_point_cloud(os.path.join(p_settings["output_dir"], "static_points.pcd"), static_points)  
+            o3d.io.write_point_cloud(os.path.join(p_settings["output_dir"], "static_points.pcd"), static_points)
             o3d.io.write_point_cloud(os.path.join(p_settings["output_dir"], "dynamic_points.pcd"), dynamic_points)
         if p_dor["viz_static_dynamic_map"]:
             total_points = static_points + dynamic_points
             o3d.visualization.draw_geometries([total_points])
 
-        cleaned_session_map = SessionMap(
-            np.asarray(static_points.points), static_eph_l
-        )
+        cleaned_session_map = SessionMap(np.asarray(static_points.points), static_eph_l)
         self.session_map = cleaned_session_map
 
         if p_dor["save_cleaned_session_map"]:
-            cleaned_session_map.save(p_settings["output_dir"], is_global=False) 
+            cleaned_session_map.save(p_settings["output_dir"], is_global=False)
         if p_dor["viz_cleaned_session_map"]:
             cleaned_session_map.visualize()
 
         return cleaned_session_map
 
-
     def get(self):
         return self.session_map
-        
 
-# Example usage
+
 if __name__ == "__main__":
     config = "../config/sample.yaml"
     remover = MapRemover(config)
-    # Load session using the config file or from an alingment module
     remover.load()
-    # Run the dynamic object removal
     remover.run()
-    # Get the cleaned session map
     cleaned_session_map = remover.get()
