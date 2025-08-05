@@ -8,6 +8,7 @@ import torch
 import open3d.core as o3c
 import torch.utils.dlpack
 import pyflann
+import faiss
 
 import cupy as cp
 from utils.session import Session
@@ -91,9 +92,10 @@ class MapRemover:
         self.session_loader : Session = None
         self.session_map : SessionMap = None
 
-        #아래 객체들은 gpu 메모리의 텐서 객체임
-        self.gpu_scans = []
-        self.gpu_poses = []
+        #아래 객체들은 gpu 메모리의 객체임
+        self.gpu_scans = [] #텐서
+        self.gpu_poses = [] #텐서
+        self.faiss_index = None
             
     def load(self, new_session: Session = None):
         p_settings = self.params["settings"]
@@ -136,6 +138,26 @@ class MapRemover:
 
         logger.info(f"Converted all session to tensors: {len(self.gpu_scans)} scans, {len(self.gpu_poses)} poses")
 
+    def build_faiss_index(self, anchor_points_tensor):
+        # **HNSW 인덱스 생성**
+        res = faiss.StandardGpuResources()
+        dim = 3
+        m = 32  # 그래프 연결 개수
+        cpu_index = faiss.IndexHNSWFlat(dim, m)
+        self.faiss_index = faiss.IndexHNSWFlat(dim, m)
+
+        anchor_np = anchor_points_tensor.detach().cpu().numpy().astype('float32')
+        self.faiss_index.add(anchor_np)  
+        logger.info(f"Built FAISS HNSW index with {anchor_np.shape[0]} points")
+
+    def faiss_knn(self, queries: torch.Tensor, k: int):
+        # **쿼리 (GPU→numpy→FAISS→Torch)**
+        queries_np = queries.detach().cpu().numpy().astype('float32')
+        dists, idx = self.faiss_index.search(queries_np, k)
+        dists = torch.as_tensor(dists, device=queries.device)
+        idx = torch.as_tensor(idx, device=queries.device, dtype=torch.int64)
+        return dists, idx
+
 
     def run(self):
         p_settings = self.params["settings"]
@@ -159,7 +181,7 @@ class MapRemover:
 
     
 
-        anchor_kdtree = FastKDTree(anchor_points_tensor)
+        self.build_faiss_index(anchor_points_tensor)
         logger.info(f"Built CuPyKDTree with {num_anchor_points} points")
 
 
@@ -185,7 +207,7 @@ class MapRemover:
             pose = self.gpu_poses[i]
             
             # occupied space update -------------------
-            dists, inds = anchor_kdtree.query(scan, k=p_dor["num_k"])
+            dists, inds = self.faiss_knn(scan, p_dor["num_k"])
             #update rate : (N, K)
             update_rate = torch.minimum(self.alpha * (1 - torch.exp(-1 * dists**2 / self.std_dev_o)) + self.beta,torch.tensor(self.alpha, device=dists.device))
                 #로짓으로 업뎃
@@ -211,19 +233,19 @@ class MapRemover:
 
             ## free samples 너무 많을때 제한, gpu 상태 체크하고 동적으로 되게 바꿀수도 잇음 ----
             #기본비율 0.2, 600000개 넘을때 제한함
-            max_free_samples_ratio = p_dor.get("max_free_samples_ratio", 0.2)
-            max_free_samples_abs = p_dor.get("max_free_samples_abs", 600_000)
+            # max_free_samples_ratio = p_dor.get("max_free_samples_ratio", 0.2)
+            # max_free_samples_abs = p_dor.get("max_free_samples_abs", 600_000)
 
-            num_samples = free_space_samples.size(0)
-            if num_samples > max_free_samples_abs:
-                target = int(num_samples * max_free_samples_ratio)
-                sel = torch.randperm(num_samples, device=free_space_samples.device)[:target]
-                free_space_samples = free_space_samples[sel]
+            # num_samples = free_space_samples.size(0)
+            # if num_samples > max_free_samples_abs:
+            #     target = int(num_samples * max_free_samples_ratio)
+            #     sel = torch.randperm(num_samples, device=free_space_samples.device)[:target]
+            #     free_space_samples = free_space_samples[sel]
 
             # #----
 
             free_space_samples = downsample_points(free_space_samples, 0.1)
-            dists, inds = anchor_kdtree.query(free_space_samples, k=p_dor["num_k"])
+            dists, inds = self.faiss_knn(free_space_samples, p_dor["num_k"])
 
             # 마스크처럼 쓰려고 플래튼
             dists_flat = dists.flatten()
@@ -246,7 +268,7 @@ class MapRemover:
 
 
         # 3) Propagate anchor local ephemerality to session map
-        distances, indices = anchor_kdtree.query(session_map_tensor, k=p_dor["num_k"])
+        distances, indices = self.faiss_knn(session_map_tensor, p_dor["num_k"])
         distances = torch.clamp(distances, min=1e-6)
         weights = 1 / (distances**2)
         weights = weights / weights.sum(dim=1, keepdim=True)  # 정규화 (M, k)
