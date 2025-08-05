@@ -1,577 +1,311 @@
-2025-08-05 15:03:18 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 15:03:18 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 15:03:18 | INFO | Processing scan 1/5
-2025-08-05 15:03:18 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 15:03:19 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:03:19 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:03:19 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:03:19 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 15:03:19 | INFO | Processing scan 2/5
-2025-08-05 15:03:19 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 15:03:19 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:03:19 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:03:19 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:03:19 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 15:03:19 | INFO | Processing scan 3/5
-2025-08-05 15:03:19 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 15:03:19 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:03:19 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:03:19 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:03:19 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 15:03:19 | INFO | Processing scan 4/5
-2025-08-05 15:03:19 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 15:03:19 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:03:19 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:03:19 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:03:19 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 15:03:19 | INFO | Processing scan 5/5
-2025-08-05 15:03:19 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 15:03:19 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:03:19 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:03:19 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:03:19 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 15:03:19 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 15:03:19 | INFO | Number of GPU scans: 5
-2025-08-05 15:03:19 | INFO | session_map_tensor.shape: torch.Size([5000, 3])
-2025-08-05 15:03:19 | INFO | session_map_tensor.dtype: torch.float32
-2025-08-05 15:03:19 | INFO | session_map_tensor.device: cuda:0
-2025-08-05 15:03:19 | INFO | NaN in session_map_tensor: False
-2025-08-05 15:03:19 | INFO | Inf in session_map_tensor: False
-2025-08-05 15:03:19 | INFO | Initialized session map: eph_l.shape = torch.Size([5000])
-2025-08-05 15:03:19 | INFO | Converting torch tensor to Open3D tensor...
-2025-08-05 15:03:19 | INFO | Converted to o3d.t.geometry.PointCloud with 5000 points
-2025-08-05 15:03:19 | INFO | Running voxel_down_sample with voxel size = 0.2
-2025-08-05 15:03:19 | INFO | anchor_points_tensor.shape: SizeVector[3182, 3]
-2025-08-05 15:03:19 | INFO | anchor_points_tensor.dtype: Float32
-2025-08-05 15:03:19 | INFO | anchor_points_tensor.device: CUDA:0
-2025-08-05 15:03:19 | INFO | Initialized anchor eph_l with shape: torch.Size([3182])
-2025-08-05 15:29:34 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 15:29:34 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 15:29:34 | INFO | Processing scan 1/5
-2025-08-05 15:29:34 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 15:29:35 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:29:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:29:35 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:29:35 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 15:29:35 | INFO | Processing scan 2/5
-2025-08-05 15:29:35 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 15:29:35 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:29:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:29:35 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:29:35 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 15:29:35 | INFO | Processing scan 3/5
-2025-08-05 15:29:35 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 15:29:35 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:29:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:29:35 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:29:35 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 15:29:35 | INFO | Processing scan 4/5
-2025-08-05 15:29:35 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 15:29:35 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:29:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:29:35 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:29:35 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 15:29:35 | INFO | Processing scan 5/5
-2025-08-05 15:29:35 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 15:29:35 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:29:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:29:35 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:29:35 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 15:29:35 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 15:29:35 | INFO | Initialized session map
-2025-08-05 15:29:35 | INFO | Updating anchor local ephemerality
-2025-08-05 15:30:13 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 15:30:13 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 15:30:13 | INFO | Processing scan 1/5
-2025-08-05 15:30:13 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 15:30:13 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:30:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:30:13 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:30:13 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 15:30:13 | INFO | Processing scan 2/5
-2025-08-05 15:30:13 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 15:30:13 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:30:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:30:13 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:30:13 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 15:30:13 | INFO | Processing scan 3/5
-2025-08-05 15:30:13 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 15:30:13 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:30:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:30:13 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:30:13 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 15:30:13 | INFO | Processing scan 4/5
-2025-08-05 15:30:13 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 15:30:13 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:30:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:30:13 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:30:13 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 15:30:13 | INFO | Processing scan 5/5
-2025-08-05 15:30:13 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 15:30:13 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:30:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:30:13 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:30:13 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 15:30:13 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 15:30:13 | INFO | Initialized session map
-2025-08-05 15:30:13 | INFO | Updating anchor local ephemerality
-2025-08-05 15:31:05 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 15:31:05 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 15:31:05 | INFO | Processing scan 1/5
-2025-08-05 15:31:05 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 15:31:05 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:31:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:31:05 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:31:05 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 15:31:05 | INFO | Processing scan 2/5
-2025-08-05 15:31:05 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 15:31:05 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:31:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:31:05 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:31:05 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 15:31:05 | INFO | Processing scan 3/5
-2025-08-05 15:31:05 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 15:31:05 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:31:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:31:05 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:31:05 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 15:31:05 | INFO | Processing scan 4/5
-2025-08-05 15:31:05 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 15:31:05 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:31:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:31:05 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:31:05 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 15:31:05 | INFO | Processing scan 5/5
-2025-08-05 15:31:05 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 15:31:05 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 15:31:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 15:31:05 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 15:31:05 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 15:31:05 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 15:31:05 | INFO | Initialized session map
-2025-08-05 15:31:05 | INFO | Updating anchor local ephemerality
-2025-08-05 16:34:41 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 16:34:41 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 16:34:41 | INFO | Processing scan 1/5
-2025-08-05 16:34:41 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 16:34:41 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 16:34:41 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 16:34:41 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 16:34:41 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 16:34:41 | INFO | Processing scan 2/5
-2025-08-05 16:34:41 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 16:34:41 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 16:34:41 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 16:34:41 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 16:34:41 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 16:34:41 | INFO | Processing scan 3/5
-2025-08-05 16:34:41 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 16:34:41 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 16:34:41 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 16:34:41 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 16:34:41 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 16:34:41 | INFO | Processing scan 4/5
-2025-08-05 16:34:41 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 16:34:41 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 16:34:41 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 16:34:41 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 16:34:41 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 16:34:41 | INFO | Processing scan 5/5
-2025-08-05 16:34:41 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 16:34:41 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 16:34:41 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 16:34:41 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 16:34:41 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 16:34:41 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 16:34:41 | INFO | Initialized session map
-2025-08-05 19:52:33 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 19:52:33 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 19:52:33 | INFO | Processing scan 1/5
-2025-08-05 19:52:33 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 19:52:33 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 19:52:33 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:52:33 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 19:52:33 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 19:52:33 | INFO | Processing scan 2/5
-2025-08-05 19:52:33 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 19:52:33 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 19:52:33 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:52:33 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 19:52:33 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 19:52:33 | INFO | Processing scan 3/5
-2025-08-05 19:52:33 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 19:52:33 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 19:52:33 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:52:33 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 19:52:33 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 19:52:33 | INFO | Processing scan 4/5
-2025-08-05 19:52:33 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 19:52:33 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 19:52:33 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:52:33 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 19:52:33 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 19:52:33 | INFO | Processing scan 5/5
-2025-08-05 19:52:33 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 19:52:33 | INFO | Converted to o3c tensor: shape=SizeVector[1000, 3], dtype=Float32, device=CUDA:0
-2025-08-05 19:52:33 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:52:33 | INFO | torch.isnan: False, torch.isinf: False
-2025-08-05 19:52:33 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 19:52:33 | INFO | Converted all session to tpcd list: 5 scans, 5 poses
-2025-08-05 19:52:33 | INFO | Initialized session map
-2025-08-05 19:52:33 | INFO | Updating anchor local ephemerality
-2025-08-05 19:52:33 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 19:52:33 | DEBUG | Processing scan 1/5
-2025-08-05 19:56:58 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 19:56:58 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 19:56:58 | INFO | Processing scan 1/5
-2025-08-05 19:56:58 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 19:56:59 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:56:59 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 19:56:59 | INFO | Processing scan 2/5
-2025-08-05 19:56:59 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 19:56:59 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:56:59 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 19:56:59 | INFO | Processing scan 3/5
-2025-08-05 19:56:59 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 19:56:59 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:56:59 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 19:56:59 | INFO | Processing scan 4/5
-2025-08-05 19:56:59 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 19:56:59 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:56:59 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 19:56:59 | INFO | Processing scan 5/5
-2025-08-05 19:56:59 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 19:56:59 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 19:56:59 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 19:56:59 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 19:56:59 | INFO | Initialized session map
-2025-08-05 19:56:59 | INFO | Updating anchor local ephemerality
-2025-08-05 19:56:59 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 19:56:59 | DEBUG | Processing scan 1/5
-2025-08-05 20:06:10 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:06:10 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:06:10 | INFO | Processing scan 1/5
-2025-08-05 20:06:10 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:06:10 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:10 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:06:10 | INFO | Processing scan 2/5
-2025-08-05 20:06:10 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:06:10 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:10 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:06:10 | INFO | Processing scan 3/5
-2025-08-05 20:06:10 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:06:10 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:10 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:06:10 | INFO | Processing scan 4/5
-2025-08-05 20:06:10 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:06:10 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:10 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:06:10 | INFO | Processing scan 5/5
-2025-08-05 20:06:10 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:06:10 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:10 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:06:10 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:06:10 | INFO | Initialized session map
-2025-08-05 20:06:10 | INFO | Updating anchor local ephemerality
-2025-08-05 20:06:10 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 20:06:10 | DEBUG | Processing scan 1/5
-2025-08-05 20:06:52 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:06:52 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:06:52 | INFO | Processing scan 1/5
-2025-08-05 20:06:52 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:06:53 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:53 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:06:53 | INFO | Processing scan 2/5
-2025-08-05 20:06:53 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:06:53 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:53 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:06:53 | INFO | Processing scan 3/5
-2025-08-05 20:06:53 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:06:53 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:53 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:06:53 | INFO | Processing scan 4/5
-2025-08-05 20:06:53 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:06:53 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:53 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:06:53 | INFO | Processing scan 5/5
-2025-08-05 20:06:53 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:06:53 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:06:53 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:06:53 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:06:53 | INFO | Initialized session map
-2025-08-05 20:06:53 | INFO | Updating anchor local ephemerality
-2025-08-05 20:06:53 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 20:06:53 | DEBUG | Processing scan 1/5
-2025-08-05 20:07:29 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:07:29 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:07:29 | INFO | Processing scan 1/5
-2025-08-05 20:07:29 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:07:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:07:29 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:07:29 | INFO | Processing scan 2/5
-2025-08-05 20:07:29 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:07:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:07:29 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:07:29 | INFO | Processing scan 3/5
-2025-08-05 20:07:29 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:07:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:07:29 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:07:29 | INFO | Processing scan 4/5
-2025-08-05 20:07:29 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:07:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:07:29 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:07:29 | INFO | Processing scan 5/5
-2025-08-05 20:07:29 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:07:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:07:29 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:07:29 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:07:29 | INFO | Initialized session map
-2025-08-05 20:07:29 | INFO | Updating anchor local ephemerality
-2025-08-05 20:07:29 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 20:07:29 | DEBUG | Processing scan 1/5
-2025-08-05 20:08:40 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:08:40 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:08:40 | INFO | Processing scan 1/5
-2025-08-05 20:08:40 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:08:40 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:08:40 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:08:40 | INFO | Processing scan 2/5
-2025-08-05 20:08:40 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:08:40 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:08:40 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:08:40 | INFO | Processing scan 3/5
-2025-08-05 20:08:40 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:08:40 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:08:40 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:08:40 | INFO | Processing scan 4/5
-2025-08-05 20:08:40 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:08:40 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:08:40 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:08:40 | INFO | Processing scan 5/5
-2025-08-05 20:08:40 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:08:40 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:08:40 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:08:40 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:08:40 | INFO | Initialized session map
-2025-08-05 20:08:40 | INFO | Updating anchor local ephemerality
-2025-08-05 20:08:40 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 20:08:40 | DEBUG | Processing scan 1/5
-2025-08-05 20:12:17 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:12:17 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:12:17 | INFO | Processing scan 1/5
-2025-08-05 20:12:17 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:12:17 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:12:17 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:12:17 | INFO | Processing scan 2/5
-2025-08-05 20:12:17 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:12:17 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:12:17 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:12:17 | INFO | Processing scan 3/5
-2025-08-05 20:12:17 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:12:17 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:12:17 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:12:17 | INFO | Processing scan 4/5
-2025-08-05 20:12:17 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:12:17 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:12:17 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:12:17 | INFO | Processing scan 5/5
-2025-08-05 20:12:17 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:12:17 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:12:17 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:12:17 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:12:17 | INFO | Initialized session map
-2025-08-05 20:12:17 | INFO | Updating anchor local ephemerality
-2025-08-05 20:12:17 | INFO | Built CuPyKDTree with 3182 points
-2025-08-05 20:12:17 | DEBUG | Processing scan 1/5
-2025-08-05 20:56:05 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 20:56:05 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 20:56:05 | INFO | Processing scan 1/5
-2025-08-05 20:56:05 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 20:56:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:56:05 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 20:56:05 | INFO | Processing scan 2/5
-2025-08-05 20:56:05 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 20:56:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:56:05 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 20:56:05 | INFO | Processing scan 3/5
-2025-08-05 20:56:05 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 20:56:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:56:05 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 20:56:05 | INFO | Processing scan 4/5
-2025-08-05 20:56:05 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 20:56:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:56:05 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 20:56:05 | INFO | Processing scan 5/5
-2025-08-05 20:56:05 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 20:56:05 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 20:56:05 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 20:56:05 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 20:56:05 | INFO | Initialized session map
-2025-08-05 20:56:05 | INFO | Updating anchor local ephemerality
-2025-08-05 20:56:05 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 20:56:05 | DEBUG | Processing scan 1/5
-2025-08-05 21:40:47 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 21:40:47 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 21:40:47 | INFO | Processing scan 1/5
-2025-08-05 21:40:47 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 21:40:47 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 21:40:47 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 21:40:47 | INFO | Processing scan 2/5
-2025-08-05 21:40:47 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 21:40:47 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 21:40:47 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 21:40:47 | INFO | Processing scan 3/5
-2025-08-05 21:40:47 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 21:40:47 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 21:40:47 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 21:40:47 | INFO | Processing scan 4/5
-2025-08-05 21:40:47 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 21:40:47 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 21:40:47 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 21:40:47 | INFO | Processing scan 5/5
-2025-08-05 21:40:47 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 21:40:47 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 21:40:47 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 21:40:47 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 21:40:47 | INFO | Initialized session map
-2025-08-05 21:40:47 | INFO | Updating anchor local ephemerality
-2025-08-05 21:40:47 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:03:26 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 22:03:26 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 22:03:26 | INFO | Processing scan 1/5
-2025-08-05 22:03:26 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 22:03:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:03:26 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 22:03:26 | INFO | Processing scan 2/5
-2025-08-05 22:03:26 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 22:03:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:03:26 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 22:03:26 | INFO | Processing scan 3/5
-2025-08-05 22:03:26 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 22:03:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:03:26 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 22:03:26 | INFO | Processing scan 4/5
-2025-08-05 22:03:26 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 22:03:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:03:26 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 22:03:26 | INFO | Processing scan 5/5
-2025-08-05 22:03:26 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 22:03:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:03:26 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 22:03:26 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 22:03:26 | INFO | Initialized session map
-2025-08-05 22:03:26 | INFO | Updating anchor local ephemerality
-2025-08-05 22:03:26 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:03:26 | DEBUG | Processing scan 1/5
-2025-08-05 22:04:31 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 22:04:31 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 22:04:31 | INFO | Processing scan 1/5
-2025-08-05 22:04:31 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 22:04:31 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:04:31 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 22:04:31 | INFO | Processing scan 2/5
-2025-08-05 22:04:31 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 22:04:31 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:04:31 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 22:04:31 | INFO | Processing scan 3/5
-2025-08-05 22:04:31 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 22:04:31 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:04:31 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 22:04:31 | INFO | Processing scan 4/5
-2025-08-05 22:04:31 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 22:04:31 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:04:31 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 22:04:31 | INFO | Processing scan 5/5
-2025-08-05 22:04:31 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 22:04:31 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:04:31 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 22:04:31 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 22:04:31 | INFO | Initialized session map
-2025-08-05 22:04:31 | INFO | Updating anchor local ephemerality
-2025-08-05 22:04:31 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:04:31 | DEBUG | Processing scan 1/5
-2025-08-05 22:04:31 | DEBUG | Processing scan 4/5
-2025-08-05 22:05:13 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 22:05:13 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 22:05:13 | INFO | Processing scan 1/5
-2025-08-05 22:05:13 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 22:05:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:05:13 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 22:05:13 | INFO | Processing scan 2/5
-2025-08-05 22:05:13 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 22:05:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:05:13 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 22:05:13 | INFO | Processing scan 3/5
-2025-08-05 22:05:13 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 22:05:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:05:13 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 22:05:13 | INFO | Processing scan 4/5
-2025-08-05 22:05:13 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 22:05:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:05:13 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 22:05:13 | INFO | Processing scan 5/5
-2025-08-05 22:05:13 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 22:05:13 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:05:13 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 22:05:13 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 22:05:13 | INFO | Initialized session map
-2025-08-05 22:05:13 | INFO | Updating anchor local ephemerality
-2025-08-05 22:05:13 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:05:13 | DEBUG | Processing scan 1/5
-2025-08-05 22:05:14 | DEBUG | Processing scan 4/5
-2025-08-05 22:05:59 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 22:05:59 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 22:05:59 | INFO | Processing scan 1/5
-2025-08-05 22:05:59 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 22:06:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:06:00 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 22:06:00 | INFO | Processing scan 2/5
-2025-08-05 22:06:00 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 22:06:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:06:00 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 22:06:00 | INFO | Processing scan 3/5
-2025-08-05 22:06:00 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 22:06:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:06:00 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 22:06:00 | INFO | Processing scan 4/5
-2025-08-05 22:06:00 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 22:06:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:06:00 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 22:06:00 | INFO | Processing scan 5/5
-2025-08-05 22:06:00 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 22:06:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:06:00 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 22:06:00 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 22:06:00 | INFO | Initialized session map
-2025-08-05 22:06:00 | INFO | Updating anchor local ephemerality
-2025-08-05 22:06:00 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:06:00 | DEBUG | Processing scan 1/5
-2025-08-05 22:06:00 | DEBUG | Processing scan 4/5
-2025-08-05 22:07:24 | INFO | Logger initialized and stderr are now redirected.
-2025-08-05 22:07:24 | INFO | Loaded new session, start converting to tpcd
-2025-08-05 22:07:24 | INFO | Processing scan 1/5
-2025-08-05 22:07:24 | INFO | Legacy pcd #0 has 1000 points
-2025-08-05 22:07:24 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:07:24 | INFO | Pose #0: [0. 0. 0.]
-2025-08-05 22:07:24 | INFO | Processing scan 2/5
-2025-08-05 22:07:24 | INFO | Legacy pcd #1 has 1000 points
-2025-08-05 22:07:24 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:07:24 | INFO | Pose #1: [2. 0. 0.]
-2025-08-05 22:07:24 | INFO | Processing scan 3/5
-2025-08-05 22:07:24 | INFO | Legacy pcd #2 has 1000 points
-2025-08-05 22:07:24 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:07:24 | INFO | Pose #2: [4. 0. 0.]
-2025-08-05 22:07:24 | INFO | Processing scan 4/5
-2025-08-05 22:07:24 | INFO | Legacy pcd #3 has 1000 points
-2025-08-05 22:07:24 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:07:24 | INFO | Pose #3: [6. 0. 0.]
-2025-08-05 22:07:24 | INFO | Processing scan 5/5
-2025-08-05 22:07:24 | INFO | Legacy pcd #4 has 1000 points
-2025-08-05 22:07:24 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
-2025-08-05 22:07:24 | INFO | Pose #4: [8. 0. 0.]
-2025-08-05 22:07:24 | INFO | Converted all session to tensors: 5 scans, 5 poses
-2025-08-05 22:07:24 | INFO | Initialized session map
-2025-08-05 22:07:24 | INFO | Updating anchor local ephemerality
-2025-08-05 22:07:24 | INFO | Built CuPyKDTree with 3394 points
-2025-08-05 22:07:24 | DEBUG | Processing scan 1/5
-2025-08-05 22:07:24 | DEBUG | Processing scan 4/5
+2025-08-05 22:43:32 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 22:43:32 | INFO | Loaded new session, converting scans to GPU tensors
+2025-08-05 22:43:32 | INFO | Converted 5 scans and poses to GPU
+2025-08-05 23:02:14 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:02:14 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:02:14 | INFO | Processing scan 1/5
+2025-08-05 23:02:14 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:02:14 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:02:14 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:02:14 | INFO | Processing scan 2/5
+2025-08-05 23:02:14 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:02:14 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:02:14 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:02:14 | INFO | Processing scan 3/5
+2025-08-05 23:02:14 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:02:14 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:02:14 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:02:14 | INFO | Processing scan 4/5
+2025-08-05 23:02:14 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:02:14 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:02:14 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:02:14 | INFO | Processing scan 5/5
+2025-08-05 23:02:14 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:02:14 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:02:14 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:02:14 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:02:14 | INFO | Initialized session map
+2025-08-05 23:08:18 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:08:18 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:08:18 | INFO | Processing scan 1/5
+2025-08-05 23:08:18 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:08:18 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:08:18 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:08:18 | INFO | Processing scan 2/5
+2025-08-05 23:08:18 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:08:18 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:08:18 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:08:18 | INFO | Processing scan 3/5
+2025-08-05 23:08:18 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:08:18 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:08:18 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:08:18 | INFO | Processing scan 4/5
+2025-08-05 23:08:18 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:08:18 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:08:18 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:08:18 | INFO | Processing scan 5/5
+2025-08-05 23:08:18 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:08:18 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:08:18 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:08:18 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:08:18 | INFO | Initialized session map
+2025-08-05 23:09:03 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:09:03 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:09:03 | INFO | Processing scan 1/5
+2025-08-05 23:09:03 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:09:03 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:03 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:09:03 | INFO | Processing scan 2/5
+2025-08-05 23:09:03 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:09:03 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:03 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:09:03 | INFO | Processing scan 3/5
+2025-08-05 23:09:03 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:09:03 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:03 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:09:03 | INFO | Processing scan 4/5
+2025-08-05 23:09:03 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:09:03 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:03 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:09:03 | INFO | Processing scan 5/5
+2025-08-05 23:09:03 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:09:03 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:03 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:09:03 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:09:03 | INFO | Initialized session map
+2025-08-05 23:09:35 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:09:35 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:09:35 | INFO | Processing scan 1/5
+2025-08-05 23:09:35 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:09:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:35 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:09:35 | INFO | Processing scan 2/5
+2025-08-05 23:09:35 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:09:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:35 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:09:35 | INFO | Processing scan 3/5
+2025-08-05 23:09:35 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:09:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:35 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:09:35 | INFO | Processing scan 4/5
+2025-08-05 23:09:35 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:09:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:35 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:09:35 | INFO | Processing scan 5/5
+2025-08-05 23:09:35 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:09:35 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:09:35 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:09:35 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:09:35 | INFO | Initialized session map
+2025-08-05 23:09:35 | INFO | Updating anchor local ephemerality
+2025-08-05 23:09:35 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:09:35 | DEBUG | Processing scan 1/5
+2025-08-05 23:09:36 | DEBUG | Processing scan 4/5
+2025-08-05 23:09:59 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:09:59 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:09:59 | INFO | Processing scan 1/5
+2025-08-05 23:09:59 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:10:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:00 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:10:00 | INFO | Processing scan 2/5
+2025-08-05 23:10:00 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:10:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:00 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:10:00 | INFO | Processing scan 3/5
+2025-08-05 23:10:00 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:10:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:00 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:10:00 | INFO | Processing scan 4/5
+2025-08-05 23:10:00 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:10:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:00 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:10:00 | INFO | Processing scan 5/5
+2025-08-05 23:10:00 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:10:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:00 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:10:00 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:10:00 | INFO | Initialized session map
+2025-08-05 23:10:00 | INFO | Updating anchor local ephemerality
+2025-08-05 23:10:00 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:10:00 | DEBUG | Processing scan 1/5
+2025-08-05 23:10:00 | DEBUG | Processing scan 4/5
+2025-08-05 23:10:28 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:10:28 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:10:28 | INFO | Processing scan 1/5
+2025-08-05 23:10:28 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:10:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:29 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:10:29 | INFO | Processing scan 2/5
+2025-08-05 23:10:29 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:10:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:29 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:10:29 | INFO | Processing scan 3/5
+2025-08-05 23:10:29 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:10:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:29 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:10:29 | INFO | Processing scan 4/5
+2025-08-05 23:10:29 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:10:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:29 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:10:29 | INFO | Processing scan 5/5
+2025-08-05 23:10:29 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:10:29 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:10:29 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:10:29 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:10:29 | INFO | Initialized session map
+2025-08-05 23:12:36 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:12:36 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:12:36 | INFO | Processing scan 1/5
+2025-08-05 23:12:36 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:12:36 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:12:36 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:12:36 | INFO | Processing scan 2/5
+2025-08-05 23:12:36 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:12:36 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:12:36 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:12:36 | INFO | Processing scan 3/5
+2025-08-05 23:12:36 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:12:36 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:12:36 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:12:36 | INFO | Processing scan 4/5
+2025-08-05 23:12:36 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:12:36 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:12:36 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:12:36 | INFO | Processing scan 5/5
+2025-08-05 23:12:36 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:12:36 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:12:36 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:12:36 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:12:36 | INFO | Initialized session map
+2025-08-05 23:13:07 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:13:07 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:13:07 | INFO | Processing scan 1/5
+2025-08-05 23:13:07 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:13:07 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:13:07 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:13:07 | INFO | Processing scan 2/5
+2025-08-05 23:13:07 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:13:07 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:13:07 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:13:07 | INFO | Processing scan 3/5
+2025-08-05 23:13:07 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:13:07 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:13:07 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:13:07 | INFO | Processing scan 4/5
+2025-08-05 23:13:07 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:13:07 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:13:07 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:13:07 | INFO | Processing scan 5/5
+2025-08-05 23:13:07 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:13:07 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:13:07 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:13:07 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:13:07 | INFO | Initialized session map
+2025-08-05 23:19:00 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:19:00 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:19:00 | INFO | Processing scan 1/5
+2025-08-05 23:19:00 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:19:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:19:00 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:19:00 | INFO | Processing scan 2/5
+2025-08-05 23:19:00 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:19:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:19:00 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:19:00 | INFO | Processing scan 3/5
+2025-08-05 23:19:00 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:19:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:19:00 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:19:00 | INFO | Processing scan 4/5
+2025-08-05 23:19:00 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:19:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:19:00 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:19:00 | INFO | Processing scan 5/5
+2025-08-05 23:19:00 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:19:00 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:19:00 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:19:00 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:19:00 | INFO | Initialized session map
+2025-08-05 23:19:00 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:19:00 | DEBUG | Processing scan 1/5
+2025-08-05 23:19:00 | DEBUG | Processing scan 4/5
+2025-08-05 23:25:55 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:25:55 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:25:55 | INFO | Processing scan 1/5
+2025-08-05 23:25:55 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:25:55 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:25:55 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:25:55 | INFO | Processing scan 2/5
+2025-08-05 23:25:55 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:25:55 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:25:55 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:25:55 | INFO | Processing scan 3/5
+2025-08-05 23:25:55 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:25:55 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:25:55 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:25:55 | INFO | Processing scan 4/5
+2025-08-05 23:25:55 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:25:55 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:25:55 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:25:55 | INFO | Processing scan 5/5
+2025-08-05 23:25:55 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:25:55 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:25:55 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:25:55 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:25:55 | INFO | Initialized session map
+2025-08-05 23:25:55 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:25:55 | DEBUG | Processing scan 1/5
+2025-08-05 23:25:55 | DEBUG | Processing scan 4/5
+2025-08-05 23:30:43 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:30:43 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:30:43 | INFO | Processing scan 1/5
+2025-08-05 23:30:43 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:30:44 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:30:44 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:30:44 | INFO | Processing scan 2/5
+2025-08-05 23:30:44 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:30:44 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:30:44 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:30:44 | INFO | Processing scan 3/5
+2025-08-05 23:30:44 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:30:44 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:30:44 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:30:44 | INFO | Processing scan 4/5
+2025-08-05 23:30:44 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:30:44 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:30:44 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:30:44 | INFO | Processing scan 5/5
+2025-08-05 23:30:44 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:30:44 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:30:44 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:30:44 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:30:44 | INFO | Initialized session map
+2025-08-05 23:30:44 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:30:44 | DEBUG | Processing scan 1/5
+2025-08-05 23:30:44 | DEBUG | Processing scan 4/5
+2025-08-05 23:31:25 | INFO | Logger initialized and stderr are now redirected.
+2025-08-05 23:31:25 | INFO | Loaded new session, start converting to tpcd
+2025-08-05 23:31:25 | INFO | Processing scan 1/5
+2025-08-05 23:31:25 | INFO | Legacy pcd #0 has 1000 points
+2025-08-05 23:31:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:31:26 | INFO | Pose #0: [0. 0. 0.]
+2025-08-05 23:31:26 | INFO | Processing scan 2/5
+2025-08-05 23:31:26 | INFO | Legacy pcd #1 has 1000 points
+2025-08-05 23:31:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:31:26 | INFO | Pose #1: [2. 0. 0.]
+2025-08-05 23:31:26 | INFO | Processing scan 3/5
+2025-08-05 23:31:26 | INFO | Legacy pcd #2 has 1000 points
+2025-08-05 23:31:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:31:26 | INFO | Pose #2: [4. 0. 0.]
+2025-08-05 23:31:26 | INFO | Processing scan 4/5
+2025-08-05 23:31:26 | INFO | Legacy pcd #3 has 1000 points
+2025-08-05 23:31:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:31:26 | INFO | Pose #3: [6. 0. 0.]
+2025-08-05 23:31:26 | INFO | Processing scan 5/5
+2025-08-05 23:31:26 | INFO | Legacy pcd #4 has 1000 points
+2025-08-05 23:31:26 | INFO | Converted to torch tensor: shape=torch.Size([1000, 3]), dtype=torch.float32, device=cuda:0
+2025-08-05 23:31:26 | INFO | Pose #4: [8. 0. 0.]
+2025-08-05 23:31:26 | INFO | Converted all session to tensors: 5 scans, 5 poses
+2025-08-05 23:31:26 | INFO | Initialized session map
+2025-08-05 23:31:26 | INFO | Built CuPyKDTree with 3394 points
+2025-08-05 23:31:26 | DEBUG | Processing scan 1/5
+2025-08-05 23:31:26 | DEBUG | Processing scan 4/5

@@ -14,6 +14,7 @@ from utils.session import Session
 from utils.session_map import SessionMap
 from utils.logger import logger
 
+
 def downsample_points(points, voxel_size: float):
     """
     points: torch.Tensor (GPU/CPU) 또는 numpy.ndarray (N,3)
@@ -39,7 +40,6 @@ def downsample_points(points, voxel_size: float):
     # 4. 다시 torch로 (원래 디바이스 & dtype 유지)
     downsampled = np.asarray(pcd.points)
     return torch.as_tensor(downsampled, device=device, dtype=dtype)
-
 
 class FastKDTree:
     def __init__(self, data, num_trees=8, checks=64):
@@ -157,13 +157,24 @@ class MapRemover:
         if num_anchor_points == 0:
             raise RuntimeError("voxel_down_sample() returned empty point cloud! Check voxel size or input data.")
 
-        anchor_eph_l = torch.full((num_anchor_points,), 0.5, device=session_map_tensor.device)
-        logger.info(f"Updating anchor local ephemerality")
+    
 
         anchor_kdtree = FastKDTree(anchor_points_tensor)
         logger.info(f"Built CuPyKDTree with {num_anchor_points} points")
+
+
+        #_________ 베이지안 업뎃을 logit으로 하기_________        
+        anchor_logits = torch.zeros(num_anchor_points, device=session_map_tensor.device)
+        anchor_counts = torch.zeros(num_anchor_points, device=session_map_tensor.device)
+
+        def logit(p):
+            return torch.log(p / (1 - p + 1e-9))
+
+        def inv_logit(l):
+            return torch.sigmoid(l)
+        #________----__________________________________
+
         
-        anchor_counts = torch.zeros(num_anchor_points, device=anchor_points_tensor.device)
         #To-do: 완전 텐서화(가능...?), gpu/cpu간 메모리 복사 최소화, 쿠다 stream 올리기, 짜잘한 연산 최적화 (eph 계속 딥카피나 재할당같은거)
         #occupied, free sp 업뎃에서 j 루프 돌 때 덮어쓰기 하던데... 난 걍 다 더해서 가중합 내려고 했음 
 
@@ -177,22 +188,13 @@ class MapRemover:
             dists, inds = anchor_kdtree.query(scan, k=p_dor["num_k"])
             #update rate : (N, K)
             update_rate = torch.minimum(self.alpha * (1 - torch.exp(-1 * dists**2 / self.std_dev_o)) + self.beta,torch.tensor(self.alpha, device=dists.device))
-            # eph_l_prev: (N, k)
-            eph_l_prev = anchor_eph_l[inds]
+                #로짓으로 업뎃
+            logit_update = logit(update_rate) 
+            anchor_logits.scatter_add_(0, inds.flatten(), logit_update.flatten())  
+            anchor_counts.scatter_add_(0, inds.flatten(), torch.ones_like(logit_update).flatten())
 
-            
-
-
-            eph_l_new = eph_l_prev * update_rate / (
-                eph_l_prev * update_rate + (1 - eph_l_prev) * (1 - update_rate)
-            )
-            anchor_eph_l.index_put_((inds,), eph_l_new, accumulate=True)
-            anchor_counts.index_put_((inds,), torch.ones_like(eph_l_new), accumulate=True)
-            
-
-
-            torch.cuda.synchronize()
-            print("이거뜨면 occuppied까지는 잘된거임")
+            # torch.cuda.synchronize()
+            # print("이거뜨면 occuppied까지는 잘된거임")
 
 
             # free space update --------------------
@@ -205,11 +207,25 @@ class MapRemover:
             sample_ratios = torch.as_tensor(sample_ratios, device=scan.device, dtype=scan.dtype)
             free_space_samples = pose + shifted_scan[:, None, :] * sample_ratios[None, :, None]  # (N, K, 3)
             free_space_samples = free_space_samples.reshape(-1, 3)  # (N*K, 3)
+
+
+            ## free samples 너무 많을때 제한, gpu 상태 체크하고 동적으로 되게 바꿀수도 잇음 ----
+            #기본비율 0.2, 600000개 넘을때 제한함
+            max_free_samples_ratio = p_dor.get("max_free_samples_ratio", 0.2)
+            max_free_samples_abs = p_dor.get("max_free_samples_abs", 600_000)
+
+            num_samples = free_space_samples.size(0)
+            if num_samples > max_free_samples_abs:
+                target = int(num_samples * max_free_samples_ratio)
+                sel = torch.randperm(num_samples, device=free_space_samples.device)[:target]
+                free_space_samples = free_space_samples[sel]
+
+            # #----
+
             free_space_samples = downsample_points(free_space_samples, 0.1)
             dists, inds = anchor_kdtree.query(free_space_samples, k=p_dor["num_k"])
 
-            # ids 마스크처럼 쓰려고 플래튼
-            inds_flat = inds.flatten()
+            # 마스크처럼 쓰려고 플래튼
             dists_flat = dists.flatten()
 
             update_rate = torch.clamp(
@@ -217,29 +233,30 @@ class MapRemover:
                 min=self.alpha
             )
 
-            eph_l_prev = anchor_eph_l[inds_flat]
-            eph_l_new = eph_l_prev * update_rate / (
-                eph_l_prev * update_rate + (1 - eph_l_prev) * (1 - update_rate)
-            )
+            #___ 로짓 업뎃
+            logit_update = logit(update_rate)
+            anchor_logits.scatter_add_(0, inds.flatten(), logit_update) 
+            anchor_counts.scatter_add_(0, inds.flatten(), torch.ones_like(logit_update))
 
-            anchor_eph_l.index_put_((inds_flat,), eph_l_new, accumulate=True)
-            anchor_counts.index_put_((inds_flat,), torch.ones_like(eph_l_new), accumulate=True)
+            # torch.cuda.synchronize()
+            # print("이거뜨면 free space 업뎃까지는 잘된거임")
 
-            torch.cuda.synchronize()
-            print("이거뜨면 free space 업뎃까지는 잘된거임")
+        anchor_logits = anchor_logits / torch.clamp(anchor_counts, min=1)  
+        anchor_eph_l = inv_logit(anchor_logits) 
+
 
         # 3) Propagate anchor local ephemerality to session map
         distances, indices = anchor_kdtree.query(session_map_tensor, k=p_dor["num_k"])
         distances = torch.clamp(distances, min=1e-6)
         weights = 1 / (distances**2)
         weights = weights / weights.sum(dim=1, keepdim=True)  # 정규화 (M, k)
-        anchor_eph_l = anchor_eph_l / torch.clamp(anchor_counts, min=1)
+        
         eph_vals = anchor_eph_l[indices]  # (M, k)
         eph_l = (weights * eph_vals).sum(dim=1)  # (M,)
         eph_l = torch.clamp(eph_l, 0.0, 1.0)
 
-        torch.cuda.synchronize()
-        print("이거뜨면 propagate까지는 잘된거임")
+        # torch.cuda.synchronize()
+        # print("이거뜨면 propagate까지는 잘된거임")
 
 
         
