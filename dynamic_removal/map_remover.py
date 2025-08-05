@@ -4,25 +4,26 @@ import numpy as np
 import open3d as o3d
 from tqdm import trange
 import torch
+import gc
 
 from utils.session import Session
 from utils.session_map import SessionMap
 from utils.logger import logger
 
-def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int, max_bytes = 3.5 * 1024 * 1024 * 1024):
+
+
+
+def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int, max_bytes = 3.5 * 1024 * 1024 * 1024, min_bytes=100 * 1024 * 1024 ):
+    #max_bytes: 자기 gpu보고 쓰기
     # scan_pts: (N, D)
     # anchor_pts: (A, D)
     # k: top-k
     # max_bytes: 한 번에 연산할 최대 메모리 (float32 기준, default 1GB)
 
-
-    ### float32로 변환
     if scan_pts.dtype != torch.float32:
         scan_pts = scan_pts.float()
     if anchor_pts.dtype != torch.float32:
         anchor_pts = anchor_pts.float()
-
-
 
     N, D = scan_pts.shape
     A = anchor_pts.shape[0]
@@ -31,24 +32,41 @@ def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int
     total_bytes = N * A * bytes_per_dist
 
     if total_bytes <= max_bytes:
-        dists_all = torch.cdist(scan_pts, anchor_pts)           # (N, A)
-        dists_k, inds = torch.topk(dists_all, k, dim=1, largest=False)
-        return dists_k, inds
+        try:
+            dists_all = torch.cdist(scan_pts, anchor_pts)           # (N, A)
+            dists_k, inds = torch.topk(dists_all, k, dim=1, largest=False)
+            return dists_k, inds
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            gc.collect()
+            print(f"[AutoBatch] OOM even for full size. Falling back to batch mode.")
 
-    else:
-        # Batch로 나눠서 처리
-        print(f"[AutoBatch] Total memory {total_bytes/1e6:.1f}MB > {max_bytes/1e6:.1f}MB → batching")
-        batch_size = int(max_bytes // (A * bytes_per_dist))
-        dists_k_all, inds_all = [], []
+    # OOM 대비 배치 fallback
+    cur_max_bytes = max_bytes
+    while cur_max_bytes >= min_bytes:
+        try:
+            batch_size = int(cur_max_bytes // (A * bytes_per_dist))
+            print(f"[AutoBatch] Trying batch_size={batch_size} (max_bytes={cur_max_bytes/1e6:.1f}MB)")
+            dists_k_all, inds_all = [], []
 
-        for i in range(0, N, batch_size):
-            end = min(i + batch_size, N)
-            dists = torch.cdist(scan_pts[i:end], anchor_pts)       # (B, A)
-            d_k, i_k = torch.topk(dists, k, dim=1, largest=False)
-            dists_k_all.append(d_k)
-            inds_all.append(i_k)
+            for i in range(0, N, batch_size):
+                end = min(i + batch_size, N)
+                dists = torch.cdist(scan_pts[i:end], anchor_pts)       # (B, A)
+                d_k, i_k = torch.topk(dists, k, dim=1, largest=False)
+                dists_k_all.append(d_k)
+                inds_all.append(i_k)
 
-        return torch.cat(dists_k_all, dim=0), torch.cat(inds_all, dim=0)
+            return torch.cat(dists_k_all, dim=0), torch.cat(inds_all, dim=0)
+
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            gc.collect()
+            cur_max_bytes *= 0.5
+            print(f"[AutoBatch] OOM. Retrying with max_bytes={cur_max_bytes/1e6:.1f}MB")
+
+    raise RuntimeError("CUDA OOM even at smallest batch size. Try using smaller scan_pts or move to CPU.")
+
+
     
 def voxel_downsample_gpu(points: torch.Tensor, voxel_size: float) -> torch.Tensor:
     """
@@ -122,16 +140,16 @@ class MapRemover:
         #gpu로 옮기기
         device = self.device
         anchor_pts = torch.from_numpy(np.asarray(anchor_points.points)).to(device)    # (M,3)
-        anchor_eph = torch.from_numpy(anchor_eph_l).to(device)                        # (M,)
+        anchor_eph_l_gpu = torch.from_numpy(anchor_eph_l).to(device)                        # (M,)
 
 
         logger.info(f"Updating anchor local ephemerality")
 
         #메모리 할당 최적화
-        eph_sum = torch.zeros_like(anchor_eph)
-        eph_cnt = torch.zeros_like(anchor_eph)
-        sum_update = torch.zeros_like(anchor_eph)
-        count_update = torch.zeros_like(anchor_eph)
+        eph_sum = torch.zeros_like(anchor_eph_l_gpu)
+        eph_cnt = torch.zeros_like(anchor_eph_l_gpu)
+        sum_update = torch.zeros_like(anchor_eph_l_gpu)
+        count_update = torch.zeros_like(anchor_eph_l_gpu)
 
         ## 앵커업뎃
         for i in trange(0, len(self.session_loader), p_dor["stride"], desc="Updating \u03B5_l", ncols=100):
@@ -150,7 +168,7 @@ class MapRemover:
                 max=alpha
             )  # (N, k)
 
-            eph_prev = anchor_eph[inds]   # (N, k)
+            eph_prev = anchor_eph_l_gpu[inds]   # (N, k)
             eph_new = eph_prev * update_rate / (
                 eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
             )
@@ -164,7 +182,7 @@ class MapRemover:
             eph_cnt.zero_()
             eph_sum.index_add_(0, flat_inds, flat_vals)
             eph_cnt.index_add_(0, flat_inds, torch.ones_like(flat_vals))
-            anchor_eph = torch.where(eph_cnt > 0, eph_sum / eph_cnt, anchor_eph)
+            anchor_eph_l_gpu = torch.where(eph_cnt > 0, eph_sum / eph_cnt, anchor_eph_l_gpu)
 
 
             pose = torch.as_tensor(self.session_loader.get_pose(i)[:3, 3], device=self.device)
@@ -184,7 +202,7 @@ class MapRemover:
                 self.alpha * (1 + torch.exp(-dists**2 / (self.std_dev_f**2))) - self.beta,
                 min=self.alpha
             )
-            eph_prev = anchor_eph[inds]
+            eph_prev = anchor_eph_l_gpu[inds]
             # Bayesian 업데이트 (N',k)
             eph_new = eph_prev * update_rate / (
                 eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
@@ -200,14 +218,14 @@ class MapRemover:
 
             sum_update.index_add_(0, flat_idx, flat_val)
             count_update.index_add_(0, flat_idx, torch.ones_like(flat_val))
-            anchor_eph = torch.where(count_update > 0, sum_update / count_update, anchor_eph)
+            anchor_eph_l_gpu = torch.where(count_update > 0, sum_update / count_update, anchor_eph_l_gpu)
             
         # 3) Propagate anchor local ephemerality to session map
         map_pts = torch.as_tensor(np.asarray(session_map.points), dtype=torch.float32, device = self.device)
         distances, indices = knn_cdist_autobatch(map_pts, anchor_pts, k=p_dor["num_k"])
         weights = (1 / torch.clamp(distances, min=1e-6)**2)
         weights /= weights.sum(dim=1, keepdim=True)
-        eph_l = (weights * anchor_eph[indices]).sum(dim=1).clamp_(0,1)  
+        eph_l = (weights * anchor_eph_l_gpu[indices]).sum(dim=1).clamp_(0,1)  
 
         # 4) Remove dynamic objects to create cleaned session map
         mask_static = eph_l <= p_dor["dynamic_threshold"]
