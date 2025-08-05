@@ -9,11 +9,21 @@ from utils.session import Session
 from utils.session_map import SessionMap
 from utils.logger import logger
 
-def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int, max_bytes=1e9):
+def knn_cdist_autobatch(scan_pts: torch.Tensor, anchor_pts: torch.Tensor, k: int, max_bytes = 3.5 * 1024 * 1024 * 1024):
     # scan_pts: (N, D)
     # anchor_pts: (A, D)
     # k: top-k
     # max_bytes: 한 번에 연산할 최대 메모리 (float32 기준, default 1GB)
+
+
+    ### float32로 변환
+    if scan_pts.dtype != torch.float32:
+        scan_pts = scan_pts.float()
+    if anchor_pts.dtype != torch.float32:
+        anchor_pts = anchor_pts.float()
+
+
+
     N, D = scan_pts.shape
     A = anchor_pts.shape[0]
     bytes_per_dist = 4  # float32
@@ -165,7 +175,7 @@ class MapRemover:
             free_space_samples = (pose + shifted_scan.unsqueeze(1) * sample_ratios.unsqueeze(-1)).reshape(-1,3)
 
             # optional coarse voxel downsample (GPU)
-            free_space_samples = voxel_downsample_gpu(free_space_samples, p_dor["voxel_ds"])
+            free_space_samples = voxel_downsample_gpu(free_space_samples, 0.1)
 
 
             dists, inds = knn_cdist_autobatch(free_space_samples, anchor_pts, k=p_dor["num_k"])
