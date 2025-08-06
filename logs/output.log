@@ -33293,3 +33293,30 @@
 2025-08-06 00:11:01 | DEBUG | Processing scan 100/703
 2025-08-06 00:11:04 | DEBUG | Processing scan 103/703
 2025-08-06 00:11:06 | DEBUG | Processing scan 106/703
+2025-08-06 11:19:08 | INFO | Logger initialized and stderr are now redirected.
+2025-08-06 11:19:08 | INFO | Starting ELite...
+2025-08-06 11:19:08 | INFO | Running Map Zipper...
+2025-08-06 11:19:08 | DEBUG | Loading source session from ./data/parkinglot/01/Scans and ./data/parkinglot/01/poses.txt
+2025-08-06 11:19:08 | INFO | Map Zipper finished.
+2025-08-06 11:19:08 | INFO | Running Map Remover...
+2025-08-06 11:19:08 | INFO | Loaded new session
+2025-08-06 11:19:47 | INFO | Initialized session map
+2025-08-06 11:19:57 | INFO | Updating anchor local ephemerality
+2025-08-06 11:19:57 | DEBUG | Processing scan 1/703
+2025-08-06 11:20:23 | DEBUG | Processing scan 4/703
+2025-08-06 11:20:47 | DEBUG | Processing scan 7/703
+2025-08-06 11:21:11 | DEBUG | Processing scan 10/703
+2025-08-06 11:21:35 | DEBUG | Processing scan 13/703
+2025-08-06 11:21:58 | DEBUG | Processing scan 16/703
+2025-08-06 11:22:22 | DEBUG | Processing scan 19/703
+2025-08-06 11:22:47 | DEBUG | Processing scan 22/703
+2025-08-06 11:23:13 | DEBUG | Processing scan 25/703
+2025-08-06 11:23:40 | DEBUG | Processing scan 28/703
+2025-08-06 11:24:08 | DEBUG | Processing scan 31/703
+2025-08-06 11:24:35 | DEBUG | Processing scan 34/703
+2025-08-06 11:25:01 | DEBUG | Processing scan 37/703
+2025-08-06 11:25:26 | DEBUG | Processing scan 40/703
+2025-08-06 11:25:49 | DEBUG | Processing scan 43/703
+2025-08-06 11:26:12 | DEBUG | Processing scan 46/703
+2025-08-06 11:26:37 | DEBUG | Processing scan 49/703
+2025-08-06 11:27:03 | DEBUG | Processing scan 52/703
