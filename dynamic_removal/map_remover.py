@@ -235,7 +235,7 @@ class MapRemover:
         # 2) Select anchor points for local ephemerality update
         tpcd_map = o3d.t.geometry.PointCloud()
 
-        anchor_points_tensor = downsample_points(session_map_tensor, p_dor["anchor_voxel_size"])
+        anchor_points_tensor = downsample_points_torch(session_map_tensor, p_dor["anchor_voxel_size"])
         num_anchor_points = anchor_points_tensor.shape[0]
 
         if num_anchor_points == 0:
@@ -309,7 +309,7 @@ class MapRemover:
 
             # #----
 
-            free_space_samples = downsample_points(free_space_samples, 0.1)
+            free_space_samples = downsample_points_torch(free_space_samples, 0.1)
             dists, inds = self.faiss_knn(free_space_samples, p_dor["num_k"])
 
             # 마스크처럼 쓰려고 플래튼
