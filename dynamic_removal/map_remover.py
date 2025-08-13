@@ -235,7 +235,7 @@ class MapRemover:
         # 2) Select anchor points for local ephemerality update
         tpcd_map = o3d.t.geometry.PointCloud()
 
-        anchor_points_tensor = downsample_points_torch(session_map_tensor, p_dor["anchor_voxel_size"])
+        anchor_points_tensor = downsample_points(session_map_tensor, p_dor["anchor_voxel_size"])
         num_anchor_points = anchor_points_tensor.shape[0]
 
         if num_anchor_points == 0:
@@ -258,7 +258,7 @@ class MapRemover:
             return torch.sigmoid(l)
         #________----__________________________________
 
-        
+        anchor_eph_l = torch.zeros(num_anchor_points, device=session_map_tensor.device)
         #To-do: 완전 텐서화(가능...?), gpu/cpu간 메모리 복사 최소화, 쿠다 stream 올리기, 짜잘한 연산 최적화 (eph 계속 딥카피나 재할당같은거)
         #occupied, free sp 업뎃에서 j 루프 돌 때 덮어쓰기 하던데... 난 걍 다 더해서 가중합 내려고 했음 
 
@@ -273,9 +273,12 @@ class MapRemover:
             #update rate : (N, K)
             update_rate = torch.minimum(self.alpha * (1 - torch.exp(-1 * dists**2 / self.std_dev_o)) + self.beta,torch.tensor(self.alpha, device=dists.device))
                 #로짓으로 업뎃
-            logit_update = logit(update_rate) 
-            anchor_logits.scatter_add_(0, inds.flatten(), logit_update.flatten())  
-            anchor_counts.scatter_add_(0, inds.flatten(), torch.ones_like(logit_update).flatten())
+
+            eph_prev = anchor_eph_l[inds] 
+            eph_new = eph_prev * update_rate / (
+                eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
+            )
+            anchor_eph_l.scatter_(0, inds.flatten(), eph_new.flatten())
 
             # torch.cuda.synchronize()
             # print("이거뜨면 occuppied까지는 잘된거임")
@@ -306,21 +309,23 @@ class MapRemover:
 
             # #----
 
-            free_space_samples = downsample_points_torch(free_space_samples, 0.1)
+            free_space_samples = downsample_points(free_space_samples, 0.1)
             dists, inds = self.faiss_knn(free_space_samples, p_dor["num_k"])
 
             # 마스크처럼 쓰려고 플래튼
             dists_flat = dists.flatten()
 
+            eph_prev = anchor_eph_l[inds]
             update_rate = torch.clamp(
-                self.alpha * (1 + torch.exp(-1 * dists_flat**2 / self.std_dev_f)) - self.beta,
-                min=self.alpha
-            )
+            self.alpha * (1 + torch.exp(-1 * dists**2 / self.std_dev_f)) - self.beta,
+            min=self.alpha)
 
-            #___ 로짓 업뎃
-            logit_update = logit(update_rate)
-            anchor_logits.scatter_add_(0, inds.flatten(), logit_update.flatten()) 
-            anchor_counts.scatter_add_(0, inds.flatten(), torch.ones_like(logit_update))
+            eph_new = eph_prev * update_rate / (
+            eph_prev * update_rate + (1 - eph_prev) * (1 - update_rate)
+                )
+
+            anchor_eph_l.scatter_(0, inds.flatten(), eph_new.flatten())
+
 
             # torch.cuda.synchronize()
             # print("이거뜨면 free space 업뎃까지는 잘된거임")
